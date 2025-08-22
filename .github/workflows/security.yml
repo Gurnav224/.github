@@ -6,21 +6,16 @@ on:
 jobs:
   dependency-review:
     runs-on: ubuntu-latest
-   
     steps:
       - name: Dependency Review
         uses: actions/dependency-review-action@v4
 
   codeql:
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'javascript', 'python' ] # extend as needed
+        language: [ 'javascript', 'python' ]
     steps:
       - uses: actions/checkout@v4
       - uses: github/codeql-action/init@v3
@@ -28,4 +23,3 @@ jobs:
           languages: ${{ matrix.language }}
       - uses: github/codeql-action/autobuild@v3
       - uses: github/codeql-action/analyze@v3
-     
