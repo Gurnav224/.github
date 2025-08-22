@@ -1,0 +1,10 @@
+name: Reusable Hello
+
+on:
+  workflow_call:   # 👈 makes it reusable
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "👋 Hello from the central repo!"
