@@ -1,8 +1,7 @@
 name: PR Guard
 
 on:
-  pull_request:
-    branches: [ main ]
+  workflow_call:
 
 jobs:
   guard:
@@ -30,5 +29,3 @@ jobs:
               This PR comes from \`${source}\`, please rebase or retarget.`
             });
             core.setFailed(`Invalid PR source branch: ${source}`);
-        
-        

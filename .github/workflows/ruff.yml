@@ -1,8 +1,7 @@
 name: Ruff Formatter
 
 on:
-  pull_request:
-    branches: [ dev ]
+  workflow_call:
 
 jobs:
   ruff:
@@ -20,7 +19,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: "3.x"
 
       - name: Install Ruff
         run: pip install ruff

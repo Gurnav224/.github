@@ -1,8 +1,7 @@
 name: Security Checks
 
 on:
-  push:
-  pull_request:
+  workflow_call:
 
 jobs:
   # 1. Dependency Review
@@ -25,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'javascript', 'python' ] # 👈 add/remove as needed
+        language: ["javascript", "python"] # 👈 add/remove as needed
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
