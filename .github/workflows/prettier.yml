@@ -1,0 +1,60 @@
+name: Prettier Formatter
+
+on:
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Prettier
+        run: npm install --save-dev prettier
+
+      - name: Run Prettier
+        run: npx prettier --write .
+
+      - name: Commit changes (if any)
+        id: commit
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Count changed files
+          changed=$(git status --porcelain | wc -l)
+
+          if [ $changed -gt 0 ]; then
+            git add .
+            git commit -m "chore: format with Prettier"
+            git push
+          fi
+
+          # ✅ Export variable for later steps
+          echo "changed=$changed" >> $GITHUB_ENV
+
+      - name: Comment on PR
+        if: env.changed != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const files = process.env.changed;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `✨ Prettier formatted ${files} file(s).`
+            })
