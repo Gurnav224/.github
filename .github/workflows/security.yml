@@ -4,7 +4,6 @@ on:
   workflow_call:
 
 jobs:
-  # 1. Dependency Review
   dependency-review:
     runs-on: ubuntu-latest
     permissions:
@@ -14,7 +13,6 @@ jobs:
       - name: Dependency Review
         uses: actions/dependency-review-action@v4
 
-  # 2. CodeQL Analysis
   codeql:
     runs-on: ubuntu-latest
     permissions:
@@ -24,18 +22,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ["javascript", "python"] # 👈 add/remove as needed
+        language: [ 'javascript', 'python' ] # extend as needed
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
-
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+      - uses: github/codeql-action/autobuild@v3
+      - uses: github/codeql-action/analyze@v3
+     
