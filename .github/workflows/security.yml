@@ -6,9 +6,7 @@ on:
 jobs:
   dependency-review:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
+   
     steps:
       - name: Dependency Review
         uses: actions/dependency-review-action@v4
